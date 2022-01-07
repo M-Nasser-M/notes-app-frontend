@@ -1,0 +1,5 @@
+.controlPanel{
+    position: absolute !important;
+    bottom: 60px;
+    right: 60px;
+}
