@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+this is th frontend for the notes app using react & material ui 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
