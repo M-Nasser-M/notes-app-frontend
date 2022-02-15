@@ -14,7 +14,7 @@ function App() {
     return () => {
       localStorage.clear();
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <Box className="App">

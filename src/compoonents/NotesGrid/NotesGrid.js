@@ -63,7 +63,7 @@ function NotesGrid() {
           );
         })
       ) : (
-        <h1>No notes Found</h1>
+        <h1>No notes Found or need to login</h1>
       )}
 
       <Modal
