@@ -1,11 +1,12 @@
-import { Fab, FormControlLabel, Grid, Modal, Switch } from "@mui/material";
+import { Fab, Grid, Modal, Switch } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import NoteCard from "../NoteCard/NoteCard";
 import { fetchNotesData } from "../../services/NotesService";
-import { Add } from "@mui/icons-material";
+import { Add, Logout } from "@mui/icons-material";
 import "./NotesGrid.css";
 import { Box } from "@mui/system";
 import NewNoteForm from "../NoteForm/NoteForm";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -22,15 +23,15 @@ const style = {
 function NotesGrid() {
   const [notes, setNotes] = useState([]);
   const [notesToView, setNoteToView] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState({});
   const [filter, setFilter] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const filterNotes = () => setFilter(!filter);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchNotesData().then((res) => {
-      console.log(res);
       setNotes(res);
       setNoteToView(res);
     });
@@ -81,10 +82,11 @@ function NotesGrid() {
         </Box>
       </Modal>
       <Box className="controlPanel">
-        <Fab color="primary" style={{ marginRight: 7 }}>
+        <Fab color="primary" sx={{ marginRight: 1 }}>
           <Switch onChange={filterNotes} />
         </Fab>
         <Fab
+          sx={{ marginRight: 1 }}
           onClick={() => {
             setNoteToEdit({});
             handleOpen();
@@ -92,6 +94,15 @@ function NotesGrid() {
           color="primary"
         >
           <Add></Add>
+        </Fab>
+        <Fab
+          onClick={() => {
+            localStorage.clear();
+            navigate("/login");
+          }}
+          color="primary"
+        >
+          <Logout />
         </Fab>
       </Box>
     </Grid>

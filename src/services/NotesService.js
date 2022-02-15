@@ -1,8 +1,13 @@
 const axios = require("axios");
+const baseUrl = process.env.REACT_APP_SERVER_URL || "";
 
 let fetchNotesData = async () => {
   try {
-    const notes = await axios.get("http://localhost:3001/api/notes/");
+    const notes = await axios.get(`${baseUrl}/api/notes/`, {
+      headers: {
+        authorization: `bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
     return notes.data;
   } catch (err) {
     console.error(err);
@@ -11,7 +16,7 @@ let fetchNotesData = async () => {
 
 let deletNote = async (id) => {
   try {
-    const note = await axios.delete("http://localhost:3001/api/notes/", {
+    const note = await axios.delete(`${baseUrl}/api/notes/`, {
       params: { id: id },
     });
     return note.data;
@@ -22,7 +27,11 @@ let deletNote = async (id) => {
 
 let saveNote = async (newNote) => {
   try {
-    const note = await axios.post("http://localhost:3001/api/notes/", newNote);
+    const note = await axios.post(`${baseUrl}/api/notes/`, newNote, {
+      headers: {
+        authorization: `bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
     return note.data;
   } catch (err) {
     console.error(err);
@@ -31,7 +40,7 @@ let saveNote = async (newNote) => {
 
 let updateNote = async (newNote) => {
   try {
-    const note = await axios.put("http://localhost:3001/api/notes/", newNote);
+    const note = await axios.put(`${baseUrl}/api/notes/`, newNote);
     return note.data;
   } catch (err) {
     console.error(err);
