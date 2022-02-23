@@ -1,18 +1,24 @@
 import { Button, Card, CardContent, TextField } from "@mui/material";
 import { LoginRounded } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box } from "@mui/system";
 import { login } from "../../services/LoginService";
 import { useNavigate } from "react-router-dom";
+import { appContext } from "../../App";
+import { logInAction } from "../../reducers/loginReducer";
 
 function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const Context = useContext(appContext);
 
   const handleLogin = async () => {
     const loginData = await login({ userName, password });
-    if (loginData.token) navigate("/notes");
+    if (loginData.token) {
+      Context.dispatch(logInAction());
+      navigate("/notes");
+    }
   };
 
   return (

@@ -6,13 +6,18 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { appContext } from "../../App";
+import { logOutAction } from "../../reducers/loginReducer";
 
 function NavBar() {
+  const Context = useContext(appContext);
+  console.log(Context);
   const navigate = useNavigate();
   const handleLogout = () => {
     window.localStorage.clear();
+    Context.dispatch(logOutAction());
     navigate("/login");
   };
   return (
@@ -28,28 +33,34 @@ function NavBar() {
             <Home sx={{ fill: "white" }} />
           </Typography>
 
-          <MenuItem>
+          <MenuItem sx={Context.state.loggedIn && { flexGrow: 1 }}>
             <Typography textAlign="center">
               <Link to="/notes">Notes</Link>
             </Typography>
           </MenuItem>
-          <MenuItem>
-            <Typography textAlign="center">
-              <Link to="/signup">SignUp</Link>
-            </Typography>
-          </MenuItem>
-          <MenuItem sx={{ flexGrow: 1 }}>
-            <Typography textAlign="center">
-              <Link to="/login">Login</Link>
-            </Typography>
-          </MenuItem>
-          <MenuItem>
-            <Typography textAlign="center">
-              <Link onClick={handleLogout} to="/login">
-                Logout
-              </Link>
-            </Typography>
-          </MenuItem>
+          {!Context.state.loggedIn && (
+            <>
+              <MenuItem>
+                <Typography textAlign="center">
+                  <Link to="/signup">SignUp</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem sx={{ flexGrow: 1 }}>
+                <Typography textAlign="center">
+                  <Link to="/login">Login</Link>
+                </Typography>
+              </MenuItem>
+            </>
+          )}
+          {Context.state.loggedIn && (
+            <MenuItem>
+              <Typography textAlign="center">
+                <Link onClick={handleLogout} to="/login">
+                  Logout
+                </Link>
+              </Typography>
+            </MenuItem>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
